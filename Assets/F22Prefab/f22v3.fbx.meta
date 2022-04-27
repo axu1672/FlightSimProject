@@ -1,11 +1,23 @@
 fileFormatVersion: 2
-guid: 4b23e39856a99dc48a19e849dee7ea45
+guid: c2f4e5f3653bd624387b728c2b3aca21
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
-      74: -623603649343465320
-    second: Scene
+      74: 7697704402429972971
+    second: LeftAileronUp
+  - first:
+      74: 2230390569773909077
+    second: LeftAileron|LeftAileronDown
+  - first:
+      74: 8066183020183776026
+    second: LeftAileron|LeftAileronUp
+  - first:
+      74: 205080209200658692
+    second: RightAileron|LeftAileronDown
+  - first:
+      74: -522911116679738830
+    second: RightAileron|LeftAileronUp
   externalObjects: {}
   materials:
     materialImportMode: 2

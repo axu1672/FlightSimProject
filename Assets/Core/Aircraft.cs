@@ -53,6 +53,12 @@ namespace Assets.Core
 
         #endregion
 
+        #region Animation
+
+        Animator _animationController;
+
+        #endregion
+
         #region Properties
 
         public Quaternion InverseRotation

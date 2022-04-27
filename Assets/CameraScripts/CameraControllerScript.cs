@@ -22,7 +22,7 @@ public class CameraControllerScript : MonoBehaviour
         try
         {
             target = player.transform;
-            offset = new Vector3(-25, 0, 7);
+            offset = new Vector3(-5, 0, 3);
             initialized = true;
         }
         catch (Exception ex)
