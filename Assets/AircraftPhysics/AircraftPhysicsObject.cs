@@ -25,19 +25,26 @@ namespace Assets.AircraftPhysics
 
         private float Yaw;
 
+        private float _baseThrottle;
+
         #endregion
 
         #region Properties
 
-        public float LiftPower => 100;
+        public virtual float LiftPower => 100;
 
-        public float InducedDragValue => 20;
+        public virtual float InducedDragValue => 20;
 
-        public float Mass => 100;
+        public virtual float Mass => 100;
 
-        public float MinimumThrustForce => 100;
+        public virtual float MinimumThrustForce => 100;
 
-        public float MaximumThrustForce => 10000;
+        public virtual float MaximumThrustForce => 10000;
+
+        public virtual float ThrottleValue
+        {
+            get { return _baseThrottle; }
+        }
 
         #endregion
 
@@ -45,17 +52,18 @@ namespace Assets.AircraftPhysics
 
         public AircraftPhysicsObject(Rigidbody rb, 
             AnimationCurve dU, AnimationCurve dD, AnimationCurve dL, AnimationCurve dR,
-            AnimationCurve dF, AnimationCurve dB, AnimationCurve coL, AnimationCurve coID)
+            AnimationCurve dF, AnimationCurve dB, AnimationCurve coL, AnimationCurve coID,
+            AnimationCurve sC)
         {
             _body = rb;
-            _curveSet = new PhysicsCurveControllerSet(dU, dD, dL, dR, dF, dB, coL, coID);
+            _curveSet = new PhysicsCurveControllerSet(dU, dD, dL, dR, dF, dB, coL, coID, sC);
         }
 
         #endregion
 
         #region Physics Evaluation Methods
 
-        public void GetState()
+        private void GetState()
         {
             _inverseRotation = Quaternion.Inverse(_body.rotation);
 
@@ -68,12 +76,12 @@ namespace Assets.AircraftPhysics
             Yaw = Mathf.Atan2(_localAngularVelocity.x, _localAngularVelocity.z);
         }
 
-        public Vector3 EvaluateThrust(float throttle)
+        private Vector3 EvaluateThrust(float throttle)
         {
             return throttle * MaximumThrustForce * Vector3.forward;
         }
 
-        public Vector3 EvaluateDrag()
+        private Vector3 EvaluateDrag()
         {
             float lv2 = _localVelocity.sqrMagnitude;
 
@@ -85,12 +93,12 @@ namespace Assets.AircraftPhysics
             return drag;
         }
 
-        public Vector3 EvaluateWeight()
+        private Vector3 EvaluateWeight()
         {
             return new Vector3();
         }
 
-        public Vector3 EvaluateLift()
+        private Vector3 EvaluateLift()
         {
             Vector3 liftVelocity = Vector3.ProjectOnPlane(_localVelocity, Vector3.right);
 
@@ -109,12 +117,51 @@ namespace Assets.AircraftPhysics
             return lift + inducedDrag;
         }
 
+        private void ApplyPhysicsUpdate()
+        {
+            GetState();
+            Vector3 T = EvaluateThrust(ThrottleValue);
+            Vector3 D = EvaluateDrag();
+            Vector3 W = EvaluateWeight();
+            Vector3 L = EvaluateLift();
+
+            _body.AddRelativeForce(T);
+            _body.AddRelativeForce(D);
+            _body.AddRelativeForce(W);
+            _body.AddRelativeForce(L);
+        }
+
+        #endregion
+
+        #region Steering Method
+
+        private Vector3 CalculateSteeringVector()
+        {
+            Vector3 ret = new Vector3();
+
+            return ret;
+        }
+
+        private void UpdateSteering()
+        {
+            Vector3 steeringAdjustment = CalculateSteeringVector();
+
+            _body.AddRelativeTorque(steeringAdjustment * Mathf.Deg2Rad, ForceMode.VelocityChange);
+        }
+
         #endregion
 
         #region Private Methods
         #endregion
 
         #region Public Methods
+
+        public void Update()
+        {
+            ApplyPhysicsUpdate();
+            UpdateSteering();
+        }
+
         #endregion
     }
 }

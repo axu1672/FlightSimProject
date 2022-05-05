@@ -40,12 +40,24 @@ namespace Assets.AircraftPhysics
 
         #endregion
 
+        #region Steering Curves
+
+        private AnimationCurve _steeringCurve;
+
+        #endregion
+
+        #region Steering Curve
+
+
+
+        #endregion
+
         #region Setup
 
         public PhysicsCurveControllerSet(
             AnimationCurve dU, AnimationCurve dD, AnimationCurve dL, AnimationCurve dR,
-            AnimationCurve dF, AnimationCurve dB, AnimationCurve coL, AnimationCurve coID
-            )
+            AnimationCurve dF, AnimationCurve dB, AnimationCurve coL, AnimationCurve coID,
+            AnimationCurve sC)
         {
             _dragU = dU;
             _dragD = dD;
@@ -55,6 +67,7 @@ namespace Assets.AircraftPhysics
             _dragB = dB;
             _coefficientOfLift = coL;
             _coefficientOfInducedDrag = coID;
+            _steeringCurve = sC;
         }
 
         #endregion
