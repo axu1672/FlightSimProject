@@ -31,5 +31,15 @@ namespace Assets.AircraftPhysics
         {
 
         }
+
+        public void EngineOn()
+        {
+            base.ThrottleValue = 0;
+        }
+
+        public void EngineOff()
+        {
+
+        }
     }
 }

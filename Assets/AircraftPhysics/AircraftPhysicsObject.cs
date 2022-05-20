@@ -25,7 +25,7 @@ namespace Assets.AircraftPhysics
 
         private float Yaw;
 
-        private float _baseThrottle;
+        private float _baseThrottle = 1;
 
         #endregion
 
